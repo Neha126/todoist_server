@@ -58,6 +58,27 @@ router.patch("/update", async function (req, res) {
   }
 });
 // delete todo by id
-router.delete("/delete", function (req, res) {});
+router.delete("/delete", async function (req, res) {
+  var { label, id } = req.body;
+  try {
+    const result = await Todo.findByIdAndDelete(id);
+    if (result) {
+      res.json({
+        success: true,
+        message: "Successfully deleted",
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "Document doesn't exists or already deleted",
+      });
+    }
+  } catch (err) {
+    res.json({
+      success: false,
+      message: "Unable to delete todo",
+    });
+  }
+});
 
 module.exports = router;
